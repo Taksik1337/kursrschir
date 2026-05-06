@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: sync_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app  # Монтируем всю текущую папку в контейнер
+    restart: always
+
+  frontend:
+    image: php:8.0-apache
+    container_name: sync_frontend
+    ports:
+      - "9000:80"
+    volumes:
+      - ./frontend_php:/var/www/html
+    environment:
+      - DOCKER_ENV=true
+    depends_on:
+      - backend
